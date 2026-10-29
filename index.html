@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>미래대학교 - Mirae University</title>
+    
+    <style>
+        /* ==========================================================================
+           1. 기본 스타일 및 CSS 변수 (Design Tokens)
+           ========================================================================== */
+        :root {
+            /* 컬러 팔레트 */
+            --navy-primary: #0b1d3a;      /* 헤더, 푸터용 깊은 네이비 */
+            --navy-secondary: #132a52;    /* 호버 시 사용할 약간 밝은 네이비 */
+            --accent-blue: #2563eb;       /* 강조 버튼 및 핵심 컬러 */
+            --accent-teal: #0d9488;       /* 서브 강조 컬러 */
+            --bg-white: #ffffff;          /* 전체 배경색 (흰색) */
+            --bg-light-gray: #f8fafc;     /* 카드/섹션용 밝은 회색 */
+            --text-dark: #1e293b;         /* 본문 어두운 글자색 */
+            --text-muted: #64748b;        /* 연한 설명 글자색 */
+            --text-white: #ffffff;        /* 흰색 글자 */
+            --border-color: #e2e8f0;      /* 테두리 색상 */
+
+            /* 머티리얼 그림자 (Material Shadows) */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+            /* 트랜지션 (부드러운 애니메이션 효과) */
+            --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* 전체 스크롤 부드럽게 설정 및 리셋 */
+        html {
+            scroll-behavior: smooth; /* 부드러운 섹션 이동 */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* 공통 컨테이너 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* ==========================================================================
+           2. 헤더 및 네비게이션 (Header & Nav)
+           ========================================================================== */
+        .site-header {
+            background-color: var(--navy-primary);
+            color: var(--text-white);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        /* 로고 디자인 */
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-symbol {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-teal));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 900;
+        }
+
+        /* 데스크톱 메뉴 */
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 500;
+            transition: var(--transition-normal);
+            padding: 8px 12px;
+            border-radius: 6px;
+            opacity: 0.9;
+        }
+
+        .nav-link:hover {
+            opacity: 1;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #60a5fa;
+        }
+
+        /* 모바일 햄버거 버튼 */
+        .hamburger {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-white);
+            font-size: 1.8rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* ==========================================================================
+           3. 히어로 섹션 (Hero Section: 정문 & 학생들)
+           ========================================================================== */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(180deg, rgba(11, 29, 58, 0.85) 0%, rgba(11, 29, 58, 0.6) 100%),
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+            color: var(--text-white);
+            padding: 120px 20px 100px;
+            text-align: center;
+            min-height: 520px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background-color: rgba(37, 99, 235, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(4px);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: #93c5fd;
+        }
+
+        .hero-title {
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.3;
+            margin-bottom: 20px;
+            word-break: keep-all;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 35px;
+            word-break: keep-all;
+            font-weight: 300;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* 머티리얼 디자인 버튼 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition-normal);
+            border: none;
+            outline: none;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary {
+            background-color: var(--accent-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           4. 기초 과학 연구 Bento Grid 섹션 (Main Content)
+           ========================================================================== */
+        .research-section {
+            padding: 90px 20px;
+            background-color: var(--bg-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-tag {
+            color: var(--accent-blue);
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            color: var(--navy-primary);
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .section-desc {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 벤토 그리드 (Bento Grid) 설정 */
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+
+        /* 벤토 카드 기본 스타일 (머티리얼 엘리베이션 적용) */
+        .bento-card {
+            background-color: var(--bg-light-gray);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            transition: var(--transition-normal);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* 카드 호버 마우스 오버 효과 (Material Hover Elevation) */
+        .bento-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-lg);
+            border-color: rgba(37, 99, 235, 0.3);
+            background-color: #ffffff;
+        }
+
+        /* 카드별 그리드 점유 범위 설정 (데스크톱) */
+        .card-large {
+            grid-column: span 7;
+        }
+
+        .card-medium {
+            grid-column: span 5;
+        }
+
+        .card-wide {
+            grid-column: span 12;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        /* 카드 내부 구성 요소를 위한 스타일 */
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .icon-quantum { background: linear-gradient(135deg, #6366f1, #a855f7); }
+        .icon-bio { background: linear-gradient(135deg, #10b981, #059669); }
+        .icon-space { background: linear-gradient(135deg, #f59e0b, #ea580c); }
+        .icon-ai { background: linear-gradient(135deg, #2563eb, #0284c7); }
+
+        .card-badge {
+            align-self: flex-start;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 12px;
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--accent-blue);
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--navy-primary);
+            margin-bottom: 12px;
+        }
+
+        .card-text {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-link {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--accent-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition-normal);
+        }
+
+        .card-link:hover {
+            gap: 10px;
+        }
+
+        /* 와이드 카드 내부 세부 레이아웃 */
+        .card-wide-content {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .card-wide-image {
+            width: 280px;
+            height: 180px;
+            border-radius: 12px;
+            object-fit: cover;
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ==========================================================================
+           5. 푸터 (Footer)
+           ========================================================================== */
+        .site-footer {
+            background-color: var(--navy-primary);
+            color: var(--text-white);
+            padding: 60px 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-brand {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .footer-desc {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .footer-heading {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+            color: #f1f5f9;
+        }
+
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            transition: var(--transition-normal);
+        }
+
+        .footer-links a:hover {
+            color: var(--text-white);
+        }
+
+        .footer-contact p {
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            text-align: center;
+            color: #64748b;
+            font-size: 0.85rem;
+        }
+
+        /* ==========================================================================
+           6. 반응형 미디어 쿼리 (Responsive Mobile Adaptation)
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .bento-grid {
+                grid-template-columns: repeat(1, 1fr); /* 모바일/태블릿에서는 1열 처리 */
+            }
+
+            .card-large, .card-medium, .card-wide {
+                grid-column: span 1;
+            }
+
+            .card-wide {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .card-wide-content {
+                padding-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .card-wide-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* 헤더 모바일 메뉴 변환 */
+            .hamburger {
+                display: block;
+            }
+
+            .nav-menu {
+                position: absolute;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: var(--navy-secondary);
+                flex-direction: column;
+                padding: 20px;
+                gap: 10px;
+                display: none; /* JS로 토글 */
+                box-shadow: var(--shadow-lg);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hero-title {
+                font-size: 2.1rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Keyframe 애니메이션 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================================================
+       헤더 (Header Section)
+       ========================================================================== -->
+    <header class="site-header">
+        <div class="container header-container">
+            <!-- 대학 로고 -->
+            <a href="#" class="logo">
+                <span class="logo-symbol">미</span>
+                <span>미래대학교</span>
+            </a>
+
+            <!-- 모바일 햄버거 버튼 -->
+            <button class="hamburger" id="hamburgerBtn" aria-label="메뉴 열기">
+                ☰
+            </button>
+
+            <!-- 메인 네비게이션 메뉴 -->
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#about" class="nav-link">대학 소개</a></li>
+                    <li><a href="#research" class="nav-link">기초과학연구소</a></li>
+                    <li><a href="#department" class="nav-link">학부 안내</a></li>
+                    <li><a href="#admission" class="nav-link">입학 안내</a></li>
+                    <li><a href="#news" class="nav-link">캠퍼스 소식</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ==========================================================================
+       히어로 섹션 (Hero Section: 정문 및 학생들 메인 비주얼)
+       ========================================================================== -->
+    <section class="hero-section" id="about">
+        <div class="hero-content">
+            <span class="hero-badge">MIRAE UNIVERSITY 2026</span>
+            <h1 class="hero-title">세상을 바꾸는 혁신,<br>미래를 선도하는 지성</h1>
+            <p class="hero-subtitle">미래대학교는 인류의 삶을 바꾸는 기초 과학 연구와 진취적인 인재 양성으로 더 나은 내일을 창조합니다.</p>
+            <div class="hero-buttons">
+                <a href="#admission" class="btn btn-primary">입학 안내 보기</a>
+                <a href="#research" class="btn btn-outline">연구소 둘러보기</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+       기초 과학 연구 4대 핵심 분야 (Bento Grid Main Section)
+       ========================================================================== -->
+    <main class="research-section" id="research">
+        <div class="container">
+            <!-- 섹션 헤더 -->
+            <div class="section-header">
+                <span class="section-tag">RESEARCH EXCELLENCE</span>
+                <h2 class="section-title">기초 과학 연구 핵심 분야</h2>
+                <p class="section-desc">미래대학교 기초과학연구소에서 추진하는 4대 세계 수준 연구 과제입니다.</p>
+            </div>
+
+            <!-- 벤토 그리드 레이아웃 (4개 카드) -->
+            <div class="bento-grid">
+                
+                <!-- 카드 1: 양자 컴퓨팅 (Large Card) -->
+                <article class="bento-card card-large">
+                    <div>
+                        <div class="card-icon icon-quantum">⚛️</div>
+                        <span class="card-badge">물리학 · 재료공학</span>
+                        <h3 class="card-title">양자 컴퓨팅 및 신소재 연구</h3>
+                        <p class="card-text">
+                            초전도체 및 위상 물질을 활용한 차세대 양자 큐비트 제어 기술을 연구합니다. 기존 컴퓨팅 한계를 극복하는 혁신적인 신소재를 개발하여 데이터 혁명을 이끕니다.
+                        </p>
+                    </div>
+                    <a href="#" class="card-link">연구 내용 자세히 보기 ➔</a>
+                </article>
+
+                <!-- 카드 2: 바이오 생명과학 (Medium Card) -->
+                <article class="bento-card card-medium">
+                    <div>
+                        <div class="card-icon icon-bio">🧬</div>
+                        <span class="card-badge">생명과학 · 유전학</span>
+                        <h3 class="card-title">바이오 생명과학 및 유전자 편집</h3>
+                        <p class="card-text">
+                            CRISPR 유전자 가위 기반의 정밀 치료법 및 차세대 바이오 의약품 원천 기술을 확보하고 희귀 질환 치료의 길을 엽니다.
+                        </p>
+                    </div>
+                    <a href="#" class="card-link">연구진 소개 ➔</a>
+                </article>
+
+                <!-- 카드 3: 우주 천문학 (Medium Card) -->
+                <article class="bento-card card-medium">
+                    <div>
+                        <div class="card-icon icon-space">🌌</div>
+                        <span class="card-badge">천문학 · 에너지</span>
+                        <h3 class="card-title">우주 천문학 및 차세대 에너지</h3>
+                        <p class="card-text">
+                            심우주 탐사 관측 데이터 분석 및 청정 인공태양 핵융합 반응제어 연구를 통해 미래 에너지를 탐구합니다.
+                        </p>
+                    </div>
+                    <a href="#" class="card-link">관측소 센터 ➔</a>
+                </article>
+
+                <!-- 카드 4: AI 기반 인공지능 기초 수학 (Large/Wide Card) -->
+                <article class="bento-card card-large">
+                    <div>
+                        <div class="card-icon icon-ai">📐</div>
+                        <span class="card-badge">수학 · 수리통계학</span>
+                        <h3 class="card-title">AI 기반 인공지능 기초 수학</h3>
+                        <p class="card-text">
+                            복잡한 데이터 패턴을 해석하는 수리적 이론 모델과 초거대 AI의 원천 알고리즘을 설계하여 신뢰할 수 있는 인공지능 이론적 기틀을 다집니다.
+                        </p>
+                    </div>
+                    <a href="#" class="card-link">수리과학연구소 ➔</a>
+                </article>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================================================
+       푸터 (Footer Section)
+       ========================================================================== -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- 대학 브랜딩 -->
+                <div>
+                    <div class="footer-brand">미래대학교</div>
+                    <p class="footer-desc">
+                        미래대학교는 학문의 진리와 창의적 도전을 바탕으로 인류에 기여하는 글로벌 선도 대학입니다.
+                    </p>
+                </div>
+
+                <!-- 빠른 링크 1 -->
+                <div>
+                    <h4 class="footer-heading">학사 정보</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">대학원 과정</a></li>
+                        <li><a href="#">학사 일정</a></li>
+                        <li><a href="#">중앙도서관</a></li>
+                        <li><a href="#">장학제도</a></li>
+                    </ul>
+                </div>
+
+                <!-- 빠른 링크 2 -->
+                <div>
+                    <h4 class="footer-heading">주요 기관</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">기초과학연구원</a></li>
+                        <li><a href="#">산학협력단</a></li>
+                        <li><a href="#">국제교류처</a></li>
+                        <li><a href="#">정보전산원</a></li>
+                    </ul>
+                </div>
+
+                <!-- 연락처 정보 -->
+                <div class="footer-contact">
+                    <h4 class="footer-heading">연락처 및 위치</h4>
+                    <p>📍 서울특별시 미래구 미래대로 123 (미래대학교)</p>
+                    <p>📞 대표전화: 02-1234-5678</p>
+                    <p>✉️ 이메일: info@mirae.ac.kr</p>
+                </div>
+            </div>
+
+            <!-- 저작권 표기 -->
+            <div class="footer-bottom">
+                <p>&copy; 2026 MIRAE UNIVERSITY. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+       자바스크립트 (JavaScript Interactivity)
+       ========================================================================== -->
+    <script>
+        // DOM 요소 가져오기
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const navMenu = document.getElementById('navMenu');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        // 1. 모바일 햄버거 메뉴 토글 기능
+        hamburgerBtn.addEventListener('click', () => {
+            // navMenu에 'active' 클래스를 붙이거나 뗌
+            navMenu.classList.toggle('active');
+            
+            // 접근성을 위한 aria-expanded 상태 변경
+            const isOpen = navMenu.classList.contains('active');
+            hamburgerBtn.setAttribute('aria-expanded', isOpen);
+        });
+
+        // 2. 모바일 환경에서 메뉴 링크 클릭 시 메뉴 닫기
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                if (navMenu.classList.contains('active')) {
+                    navMenu.classList.remove('active');
+                }
+            });
+        });
+
+        // 3. 카드에 마우스 호버 시 가벼운 머티리얼 인터렉션 예시 (선택적)
+        const bentoCards = document.querySelectorAll('.bento-card');
+        bentoCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.3s ease';
+            });
+        });
+    </script>
+</body>
+</html>
